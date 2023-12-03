@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mysql:
+    # mysql という名前のサービスを作成
+    image: mysql:8.0.35-debian
+    # イメージを指定
+    environment:
+      # 環境変数を指定
+      - MYSQL_ROOT_PASSWORD=rootpass
+      # MySQLはルートユーザーのパスワードを指定が必須
+      - TZ=Asia/Tokyo
+      # タイムゾーンを東京の時間に指定
+    volumes:
+      # データ永続化設定
+
+      # 方法 1
+      # - ./data:/var/lib/mysql
+      # ローカルのファイルにデータを記録し、それをDockerコンテナにマウントする
+      # /var/lib/mysql は、Docker内でMySQLのデータが保存される場所（デフォルト）
+
+      # 方法 2
+      - data-volumes:/var/lib/mysql
+      # Docker側のボリュームデータを指定する
+
+volumes:
+  # ルートにも volumes を指定
+  data-volumes:
+  # 毎回同じ名前のボリュームを指定することができ、データの永続化が可能になる
+  # ここの名前と services < mysql < volumes の名前を一致させる
+  # 名前が一致するなら、どんな名前でも可能
+
+  # 注意：Docker側のボリュームが消えると永続化していたデータも消える
